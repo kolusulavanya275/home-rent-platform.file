@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Agreement</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>/* Google Font */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .agreement-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .agreement-text {
+            text-align: left;
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .agreement-text ul {
+            padding-left: 20px;
+        }
+        
+        label {
+            display: block;
+            text-align: left;
+            margin: 10px 0;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        
+        .agree-btn {
+            width: 100%;
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+        
+        .agree-btn:hover {
+            background: #218838;
+        }
+        </style>
+</head>
+<body>
+    <div class="agreement-container">
+        <h2>Rental Agreement</h2>
+        
+        <div class="agreement-text">
+            <p>
+                This Rental Agreement ("Agreement") is made between the property owner and the tenant. 
+                By accepting this agreement, the tenant agrees to the following terms and conditions:
+            </p>
+            <ul>
+                <li>The tenant shall pay the rent on time.</li>
+                <li>No illegal activities shall be conducted on the premises.</li>
+                <li>Property must be maintained in good condition.</li>
+                <li>The tenant is responsible for any damages caused.</li>
+                <li>Failure to comply may result in termination of the agreement.</li>
+            </ul>
+            <p>
+                Please read the agreement carefully before proceeding.
+            </p>
+        </div>
+
+        <form id="agreementForm">
+            <input type="checkbox" id="agreeCheckbox" required>
+            <label for="agreeCheckbox">I have read and agree to the terms and conditions</label>
+
+            <button type="submit" class="agree-btn">Agree & Proceed</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("agreementForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            if (document.getElementById("agreeCheckbox").checked) {
+                alert("Agreement Accepted! Redirecting to Home Page...");
+                window.location.href = "home.html"; // Redirect to home page after agreement
+            } else {
+                alert("You must agree to the terms before proceeding.");
+            }
+        });
+    </script>
+</body>
+</html>

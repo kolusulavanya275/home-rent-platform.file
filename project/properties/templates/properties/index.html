@@ -36,7 +36,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real Estate Layout</title>
+    <title>HOMEWANTERS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -251,193 +251,13 @@
             padding: 10px;
             cursor: pointer;
         }
-
-        /* login page css code */
-
-        @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
-
-        * {
-            box-sizing: border-box;
-        }
-
-        .gbs {
-            background: #f6f5f7;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            font-family: 'Montserrat', sans-serif;
-            height: 100vh;
-            margin: -20px 0 50px;
-        }
-
-        .sa {
-            font-weight: bold;
-            margin: 0;
-        }
-
-        .sahu {
-            font-size: 14px;
-            font-weight: 100;
-            line-height: 20px;
-            letter-spacing: 0.5px;
-            margin: 20px 0 30px;
-        }
-
-        .bgs {
-            font-size: 12px;
-        }
-
-        .aa {
-            color: #333;
-            font-size: 14px;
-            text-decoration: none;
-            margin: 15px 0;
-        }
-
-        .but {
-            border-radius: 20px;
-            border: 1px solid #FF4B2B;
-            background-color: #FF4B2B;
-            color: #FFFFFF;
-            font-size: 12px;
-            font-weight: bold;
-            padding: 12px 45px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            transition: transform 80ms ease-in;
-        }
-
-        .but:active {
-            transform: scale(0.95);
-        }
-
-        .but:focus {
-            outline: none;
-        }
-
-        .but.hrp-ghost {
-            background-color: transparent;
-            border-color: #FFFFFF;
-        }
-
-        .sgb-form {
-            background-color: #FFFFFF;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            padding: 0 50px;
-            height: 100%;
-            text-align: center;
-        }
-
-        .bbss {
-            background-color: #eee;
-            border: none;
-            padding: 12px 15px;
-            margin: 8px 0;
-            width: 100%;
-        }
-
-        .hrp-container {
-            background-color: #fff;
-            border-radius: 10px;
-            width: 768px;
-            max-width: 100%;
-            min-height: 480px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hrp-form-container {
-            position: absolute;
-            top: 0;
-            height: 100%;
-            width: 50%;
-            transition: all 0.6s ease-in-out;
-        }
-
-        .hrp-sign-in-container {
-            left: 0;
-            z-index: 2;
-        }
-
-        .hrp-container.right-panel-active .hrp-sign-in-container {
-            transform: translateX(100%);
-        }
-
-        .hrp-sign-up-container {
-            left: 100%;
-            opacity: 0;
-            z-index: 1;
-        }
-
-        .hrp-container.right-panel-active .hrp-sign-up-container {
-            transform: translateX(-100%);
-            opacity: 1;
-            z-index: 5;
-        }
-
-        .hrp-overlay-container {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 50%;
-            height: 100%;
-            overflow: hidden;
-            transition: transform 0.6s ease-in-out;
-        }
-
-        .hrp-container.right-panel-active .hrp-overlay-container {
-            transform: translateX(-100%);
-        }
-
-        .hrp-overlay {
-            background: linear-gradient(to right, #FF4B2B, #FF416C);
-            color: #FFFFFF;
-            position: relative;
-            left: -100%;
-            height: 100%;
-            width: 200%;
-            display: flex;
-        }
-
-        .hrp-overlay-panel {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 40px;
-            text-align: center;
-            width: 50%;
-        }
-
-        .hrp-overlay-left {
-            transform: translateX(0);
-        }
-
-        .hrp-overlay-right {
-            transform: translateX(0);
-        }
-
-        .ggbb {
-            background-color: #222;
-            color: #fff;
-            font-size: 14px;
-            bottom: 0;
-            position: fixed;
-            left: 0;
-            right: 0;
-            text-align: center;
-            z-index: 999;
-        }
     </style>
 </head>
 
 <body>
     <!-- Navigation Bar -->
     <div class="navbar">
-        <div class="logo">Home rental</div>
+        <div class="logo">HOME-RENTAL</div>
 
         <div class="search-bar">
             <select class="form-select" style="width: 80px;" id="propertyType" onchange="toggleListings()">
@@ -460,7 +280,12 @@
             <!-- Dropdown Menu -->
             <div class="dropdown-menu" id="dropdownMenu">
                 <div class="user-actions">
-                    <h2 class="login-btn" id="loginButton">LOGIN / REGISTER</h2>
+                    {% if user.is_authenticated %}
+                    <h2>Welcome, {{ user.username }}</h2>
+                    <a href="{% url 'logout' %}">Logout</a>
+                    {% else %}
+                    <h2 class="login-btn" id="loginButton"><a href="{% url 'login' %}">LOGIN / REGISTER</a></h2>
+                    {% endif %}
                     <h3>My Activity</h3>
                     <ul>
                         <li>Recently Searched</li>
@@ -472,7 +297,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- Left Sidebar (Filters) -->
     <div class="left-sidebar">
@@ -634,23 +458,41 @@
                 <div class="row">
                     {% if rent_properties %}
                     {% for property in rent_properties %}
-                    <div class="col-md-12">
+                    <div class="col-md-12 property-card" data-id="rent-{{property.id}}" data-type="rent">
                         <div class="card mb-3">
                             <div class="row g-0">
                                 <div class="col-md-4">
-                                    <img src="{% if property.image %}{{ property.image.url }}{% else %}/static/images/default-placeholder.png{% endif %}"
-                                        alt="{{ property.name }}" height="230px" width="270px" />
+                                    <img src="{% if property.image %}{{ property.image.url }}{% else %}/static/images/default-placeholder.png{% endif %} "
+                                        alt="{{ property.name }}" height="200px" width="250px" />
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ property.name }}</h5>
                                         <p class="card-text">{{ property.bedrooms }} Bedroom House for rent</p>
                                         <p class="card-text"><strong>₹{{ property.price }}</strong> /month</p>
-                                        <p class="rating">⭐ {{ property.rating }} ({{ property.reviews_count }} Reviews)
+                                        <p class="rating">⭐ {{ property.rating }} ({{ property.reviews_count }}
+                                            Reviews)
                                         </p>
                                         <p><i class='fas fa-map-marker-alt'></i> {{ property.location }}</p>
-                                        <button class="btn btn-primary">Book Now</button>
-                                        <button class="btn btn-outline-primary">Contact</button>
+                                        <button class="btn btn-primary book-now-btn"
+                                            onclick="window.location.href='/book_now/{{ property.id }}/'">
+                                            Book Now
+                                        </button>
+
+
+
+                                        <button class="btn btn-primary view-property" data-id="rent-{{ property.id }}"
+                                            data-type="rent">ViewProperty</button>
+                                        <button class="btn btn-outline-primary" data-property-id="{{ property.id }}"
+                                            onclick="showContact(this.getAttribute('data-property-id'))">
+                                            Contact
+                                        </button>
+                                        <div id="contact-info-{{ property.id }}" class="contact-info"
+                                            style="display: none; margin-top: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                                            <strong>Contact Information:</strong>
+                                            <p id="contact-details-{{ property.id }}"></p>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -668,23 +510,41 @@
                 <div class="row">
                     {% if buy_properties %}
                     {% for property in buy_properties %}
-                    <div class="col-md-12">
+                    <div class="col-md-12 property-card" data-id="buy-{{property.id}}" data-type="buy">
                         <div class="card mb-3">
                             <div class="row g-0">
                                 <div class="col-md-4">
                                     <img src="{% if property.image %}{{ property.image.url }}{% else %}/static/images/default-placeholder.png{% endif %}"
-                                        alt="{{ property.name }}" height="230px" width="270px" />
+                                        alt="{{ property.name }}" height="200px" width="250px" />
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ property.name }}</h5>
                                         <p class="card-text">{{ property.bedrooms }} Bedroom House for buy</p>
                                         <p class="card-text"><strong>₹{{ property.price }}</strong></p>
-                                        <p class="rating">⭐ {{ property.rating }} ({{ property.reviews_count }} Reviews)
+                                        <p class="rating">⭐ {{ property.rating }} ({{ property.reviews_count }}
+                                            Reviews)
                                         </p>
                                         <p><i class='fas fa-map-marker-alt'></i> {{ property.location }}</p>
-                                        <button class="btn btn-primary">Buy Now</button>
-                                        <button class="btn btn-outline-primary">Contact</button>
+                                        <button class="btn btn-primary book-now-btn"
+                                            onclick="window.location.href='/book_now/{{ property.id }}/'">
+                                            Book Now
+                                        </button>
+
+
+                                        <button class="btn btn-primary view-property"
+                                            data-id="buy-{{ property.id }}">ViewProperty</button>
+                                        <button class="btn btn-outline-primary" data-property-id="{{ property.id }}"
+                                            onclick="showContact(this.getAttribute('data-property-id'))">
+                                            Contact
+                                        </button>
+
+                                        <div id="contact-info-{{ property.id }}" class="contact-info"
+                                            style="display: none; margin-top: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                                            <strong>Contact Information:</strong>
+                                            <p id="contact-details-{{ property.id }}"></p>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -696,247 +556,287 @@
                     {% endif %}
                 </div>
             </div>
-
-
-
-            <template id="login-form-template">
-                <div id="login-form">
-                    <div class="gbs">
-                        <div class="hrp-container" id="hrp-container">
-                            <div class="hrp-form-container hrp-sign-up-container">
-                                <form action="#" class="sgb-form">
-                                    <h1 class="sa">Create Account</h1>
-                                    <div class="hrp-social-container">
-                                        <a href="#" class="aa"><i class="fab fa-facebook-f"></i></a>
-                                        <a href="#" class="aa"><i class="fab fa-google-plus-g"></i></a>
-                                        <a href="#" class="aa"><i class="fab fa-linkedin-in"></i></a>
-                                    </div>
-                                    <span>or use your email for registration</span>
-                                    <input type="text" placeholder="Name" class="bbss" />
-                                    <input type="email" placeholder="Email" class="bbss" />
-                                    <input type="password" placeholder="Password" class="bbss" />
-                                    <button class="but">Sign Up</button>
-                                </form>
-                            </div>
-                            <div class="hrp-form-container hrp-sign-in-container">
-                                <form action="#" class="sgb-form">
-                                    <h1 class="sa">Sign in</h1>
-                                    <div class="hrp-social-container">
-                                        <a href="#" class="aa"><i class="fab fa-facebook-f"></i></a>
-                                        <a href="#" class="aa"><i class="fab fa-google-plus-g"></i></a>
-                                        <a href="#" class="aa"><i class="fab fa-linkedin-in"></i></a>
-                                    </div>
-                                    <span class="bgs">or use your account</span>
-                                    <input type="email" placeholder="Email" class="bbss" />
-                                    <input type="password" placeholder="Password" class="bbss" />
-                                    <a href="#" class="aa">Forgot your password?</a>
-                                    <button class="but">Sign In</button>
-                                </form>
-                            </div>
-                            <div class="hrp-overlay-container">
-                                <div class="hrp-overlay">
-                                    <div class="hrp-overlay-panel hrp-overlay-left">
-                                        <h1 class="sa">Welcome Back!</h1>
-                                        <p class="sahu">To keep connected with us please login with your personal info
-                                        </p>
-                                        <button class="but hrp-ghost" id="hrp-signIn">Sign In</button>
-                                    </div>
-                                    <div class="hrp-overlay-panel hrp-overlay-right">
-                                        <h1 class="sa">Hello, Friend!</h1>
-                                        <p class="sahu">Enter your personal details and start your journey with us</p>
-                                        <button class="but hrp-ghost" id="hrp-signUp">Sign Up</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </template>
-
         </div>
+    </div>
 
 
-        <!-- Right Sidebar (Dealers, Buyers, etc.) -->
-        <div class="right-sidebar">
-            <div class="sidebar">
-                <h2>Explore our Services</h2>
+    <!-- Right Sidebar (Dealers, Buyers, etc.) -->
+    <div class="right-sidebar">
+        <div class="sidebar">
+            <h2>Explore our Services</h2>
 
-                <div class="menu-item">For Buyers</div>
-                <div class="submenu">
-                    <a href="#">Buy Property</a>
-                    <a href="#">Investment Advice</a>
-                </div>
-
-                <div class="menu-item">For Tenants</div>
-                <div class="submenu">
-                    <a href="#">Rent Homes</a>
-                    <a href="#">Short-term Rentals</a>
-                </div>
-
-                <div class="menu-item">For Owners</div>
-                <div class="submenu">
-                    <a href="#">List Property</a>
-                    <a href="#">Manage Tenants</a>
-                </div>
-
-                <div class="menu-item">For Dealers / Builders</div>
-                <div class="submenu">
-                    <a href="#">Partner with Us</a>
-                    <a href="#">Builder Services</a>
-                </div>
-                <div class="menu-item">About Us</div>
+            <div class="menu-item">For Buyers</div>
+            <div class="submenu">
+                <a href="#">Buy Property</a>
+                <a href="#">Investment Advice</a>
             </div>
 
+            <div class="menu-item">For Tenants</div>
+            <div class="submenu">
+                <a href="#">Rent Homes</a>
+                <a href="#">Short-term Rentals</a>
+            </div>
+
+            <div class="menu-item">For Owners</div>
+            <div class="submenu">
+                <a href="#">List Property</a>
+                <a href="#">Manage Tenants</a>
+            </div>
+
+            <div class="menu-item">For Dealers / Builders</div>
+            <div class="submenu">
+                <a href="#">Partner with Us</a>
+                <a href="#">Builder Services</a>
+            </div>
+            <div class="menu-item">About Us</div>
         </div>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                document.getElementById("budget-range").addEventListener("input", function () {
-                    document.getElementById("budget-value").textContent = this.value;
-                });
 
-                document.getElementById("apply-filters").addEventListener("click", function () {
-                    let selectedFilters = [];
-
-                    // Get budget filter
-                    let budget = document.getElementById("budget-range").value;
-                    if (budget > 0) selectedFilters.push("Budget: " + budget + " Lacs");
-
-                    // Get bedroom filter
-                    let bedrooms = document.getElementById("bedrooms").value;
-                    selectedFilters.push("Bedrooms: " + bedrooms);
-
-                    // Get property type filter
-                    let checkboxes = document.querySelectorAll(".filter-group input[type='checkbox']:checked");
-                    checkboxes.forEach(function (checkbox) {
-                        selectedFilters.push(checkbox.value);
-                    });
-
-                    // Display applied filters
-                    let filterDisplay = document.getElementById("selected-filters");
-                    let appliedFiltersDiv = document.querySelector(".applied-filters");
-
-                    if (selectedFilters.length > 0) {
-                        filterDisplay.innerHTML = selectedFilters.join(", ");
-                        appliedFiltersDiv.style.display = "block";
-                    } else {
-                        appliedFiltersDiv.style.display = "none";
-                    }
-                });
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("budget-range").addEventListener("input", function () {
+                document.getElementById("budget-value").textContent = this.value;
             });
 
-            //right slide
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    item.classList.toggle('active');
-                });
-            });
+            document.getElementById("apply-filters").addEventListener("click", function () {
+                let selectedFilters = [];
 
-            //drop down
-            document.addEventListener("DOMContentLoaded", function () {
-                const iconContainer = document.getElementById("iconContainer");
-                const dropdownMenu = document.getElementById("dropdownMenu");
+                // Get budget filter
+                let budget = document.getElementById("budget-range").value;
+                if (budget > 0) selectedFilters.push("Budget: " + budget + " Lacs");
 
-                iconContainer.addEventListener("click", function () {
-                    dropdownMenu.classList.toggle("active");
-                });
+                // Get bedroom filter
+                let bedrooms = document.getElementById("bedrooms").value;
+                selectedFilters.push("Bedrooms: " + bedrooms);
 
-                // Close the dropdown if clicked outside
-                document.addEventListener("click", function (e) {
-                    if (!iconContainer.contains(e.target) && !dropdownMenu.contains(e.target)) {
-                        dropdownMenu.classList.remove("active");
-                    }
-                });
-            });
-
-
-            // function toggleListings() {
-            // const propertyType = document.getElementById('propertyType').value;
-            // if (propertyType === 'rent') {
-            // document.getElementById('rent-list').classList.remove('hidden');
-            // document.getElementById('buy-list').classList.add('hidden');
-            // } else {
-            // document.getElementById('buy-list').classList.remove('hidden');
-            // document.getElementById('rent-list').classList.add('hidden');
-            // }
-            // }
-
-            // changing the rent to buy script code
-            function toggleListings() {
-                const propertyType = document.getElementById('propertyType').value.toLowerCase();
-                document.getElementById('rent-list').classList.toggle('hidden', propertyType !== 'rent');
-                document.getElementById('buy-list').classList.toggle('hidden', propertyType !== 'buy');
-            }
-
-
-
-
-            // JavaScript to show login form in main-content area
-            document.getElementById('loginButton').addEventListener('click', function () {
-                const mainContent = document.querySelector('.main-content');
-                const loginFormTemplate = document.getElementById('login-form-template').content.cloneNode(true);
-                mainContent.innerHTML = ''; // Clear existing content
-                mainContent.appendChild(loginFormTemplate); // Add login form
-            });
-
-
-            const signUpButton = document.getElementById('hrp-signUp');
-            const signInButton = document.getElementById('hrp-signIn');
-            const container = document.getElementById('hrp-container');
-
-            signUpButton.addEventListener('click', () => {
-                container.classList.add('right-panel-active');
-            });
-
-            signInButton.addEventListener('click', () => {
-                container.classList.remove('right-panel-active');
-            });
-
-
-
-            function searchProperties() {
-                const query = document.getElementById('search-bar').value.trim().toLowerCase();
-                const propertyType = document.getElementById('propertyType').value;
-                const rentCards = document.querySelectorAll('#rent-list .card.mb-3');
-                const buyCards = document.querySelectorAll('#buy-list .card.mb-3');
-                let hasResults = false;
-
-                const cards = propertyType === 'Rent' ? rentCards : buyCards;
-
-                cards.forEach(card => {
-                    const cardBody = card.querySelector('.card-body');
-                    const title = cardBody.getAttribute('data-title')?.toLowerCase() || '';
-                    const location = cardBody.getAttribute('data-location')?.toLowerCase() || '';
-
-                    if (title.includes(query) || location.includes(query)) {
-                        card.style.display = 'flex'; // Show matching cards
-                        hasResults = true;
-                    } else {
-                        card.style.display = 'none'; // Hide non-matching cards
-                    }
+                // Get property type filter
+                let checkboxes = document.querySelectorAll(".filter-group input[type='checkbox']:checked");
+                checkboxes.forEach(function (checkbox) {
+                    selectedFilters.push(checkbox.value);
                 });
 
-                document.addEventListener('DOMContentLoaded', function () {
-                    document.getElementById('propertyType').addEventListener('change', toggleListings);
-                });
+                // Display applied filters
+                let filterDisplay = document.getElementById("selected-filters");
+                let appliedFiltersDiv = document.querySelector(".applied-filters");
 
-                function toggleListings() {
-                    const propertyType = document.getElementById('propertyType').value;
-                    const rentList = document.getElementById('rent-list');
-                    const buyList = document.getElementById('buy-list');
-
-                    if (propertyType === 'Rent') {
-                        rentList.style.display = 'block';
-                        buyList.style.display = 'none';
-                    } else if (propertyType === 'Buy') {
-                        rentList.style.display = 'none';
-                        buyList.style.display = 'block';
-                    } else {
-                        console.error('Invalid property type selected.');
-                    }
+                if (selectedFilters.length > 0) {
+                    filterDisplay.innerHTML = selectedFilters.join(", ");
+                    appliedFiltersDiv.style.display = "block";
+                } else {
+                    appliedFiltersDiv.style.display = "none";
                 }
+            });
+        });
 
+        //right slide                
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                item.classList.toggle('active');
+            });
+        });
+
+        //drop down
+        document.addEventListener("DOMContentLoaded", function () {
+            const iconContainer = document.getElementById("iconContainer");
+            const dropdownMenu = document.getElementById("dropdownMenu");
+
+            iconContainer.addEventListener("click", function () {
+                dropdownMenu.classList.toggle("active");
+            });
+
+            // Close the dropdown if clicked outside
+            document.addEventListener("click", function (e) {
+                if (!iconContainer.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                    dropdownMenu.classList.remove("active");
+                }
+            });
+        });
+
+
+        // function toggleListings() {
+        // const propertyType = document.getElementById('propertyType').value;
+        // if (propertyType === 'rent') {
+        // document.getElementById('rent-list').classList.remove('hidden');
+        // document.getElementById('buy-list').classList.add('hidden');
+        // } else {
+        // document.getElementById('buy-list').classList.remove('hidden');
+        // document.getElementById('rent-list').classList.add('hidden');
+        // }
+        // }
+
+        // changing the rent to buy script code
+        function toggleListings() {
+            const propertyType = document.getElementById('propertyType').value.toLowerCase();
+            document.getElementById('rent-list').classList.toggle('hidden', propertyType !== 'rent');
+            document.getElementById('buy-list').classList.toggle('hidden', propertyType !== 'buy');
+        }
+
+
+
+
+
+
+
+        // search bar//
+        function searchProperties() {
+            const query = document.getElementById('search-bar').value.trim().toLowerCase();
+            const propertyType = document.getElementById('propertyType').value;
+            const rentCards = document.querySelectorAll('#rent-list .card.mb-3');
+            const buyCards = document.querySelectorAll('#buy-list .card.mb-3');
+            let hasResults = false;
+
+            const cards = propertyType === 'Rent' ? rentCards : buyCards;
+
+            cards.forEach(card => {
+                const cardBody = card.querySelector('.card-body');
+                const title = cardBody.getAttribute('data-title')?.toLowerCase() || '';
+                const location = cardBody.getAttribute('data-location')?.toLowerCase() || '';
+
+                if (title.includes(query) || location.includes(query)) {
+                    card.style.display = 'flex'; // Show matching cards
+                    hasResults = true;
+                } else {
+                    card.style.display = 'none'; // Hide non-matching cards
+                }
+            });
+
+            document.addEventListener('DOMContentLoaded', function () {
+                document.getElementById('propertyType').addEventListener('change', toggleListings);
+            });
+
+            function toggleListings() {
+                const propertyType = document.getElementById('propertyType').value;
+                const rentList = document.getElementById('rent-list');
+                const buyList = document.getElementById('buy-list');
+
+                if (propertyType === 'Rent') {
+                    rentList.style.display = 'block';
+                    buyList.style.display = 'none';
+                } else if (propertyType === 'Buy') {
+                    rentList.style.display = 'none';
+                    buyList.style.display = 'block';
+                } else {
+                    console.error('Invalid property type selected.');
+                }
             }
-        </script>
+
+        }
+
+
+
+        // <!-- JavaScript to handle dynamic property display -->
+
+        // to view property//
+
+
+        function showProperty(card) {
+            // Hide all property cards
+            document.querySelectorAll(".card.mb-3").forEach((el) => {
+                el.style.display = "none";
+            });
+
+            // Show only the selected property card
+            card.style.display = "block";
+
+            // Add a Back to List button if not already present
+            if (!document.getElementById("backToList")) {
+                const backButton = document.createElement("button");
+                backButton.textContent = "Back to List";
+                backButton.id = "backToList";
+                backButton.className = "btn btn-secondary";
+                backButton.style.marginTop = "10px";
+                backButton.addEventListener("click", function () {
+                    document.querySelectorAll(".card.mb-3").forEach((el) => {
+                        el.style.display = "block";
+                    });
+                    this.remove();
+                });
+                card.parentNode.appendChild(backButton);
+            }
+        }
+
+        // Attach click event to each property card
+        document.querySelectorAll(".card.mb-3").forEach((card) => {
+            card.addEventListener("click", function () {
+                showProperty(this);
+            });
+        });
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("JavaScript Loaded");
+
+            const signUpButton = document.getElementById("signUp");
+            const signInButton = document.getElementById("signIn");
+            const container = document.getElementById("container");
+
+            if (signUpButton && signInButton && container) {
+                console.log("Elements Found");
+
+                signUpButton.addEventListener("click", () => {
+                    console.log("Sign Up Clicked");
+                    container.classList.add("right-panel-active");
+                });
+
+                signInButton.addEventListener("click", () => {
+                    console.log("Sign In Clicked");
+                    container.classList.remove("right-panel-active");
+                });
+            } else {
+                console.log("One or more elements not found!");
+            }
+        });
+
+
+        // to contact page
+
+
+        function showContact(propertyId) {
+            fetch(`/get_contact_details/${propertyId}/`)  // Ensure this URL matches the Django URL pattern
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);  // Debugging: Check API response in console
+
+                    if (data.success) {
+                        let contactInfo = document.getElementById(`contact-info-${propertyId}`);
+                        let contactDetails = document.getElementById(`contact-details-${propertyId}`);
+
+                        if (contactInfo && contactDetails) {
+                            contactDetails.innerHTML = `
+                        <p><strong>Name:</strong> ${data.name}</p>
+                        <p><strong>Phone:</strong> ${data.phone}</p>
+                        <p><strong>Email:</strong> ${data.email}</p>
+                    `;
+                            contactInfo.style.display = "block";
+                        } else {
+                            console.error("Contact info element not found!");
+                        }
+                    } else {
+                        alert("Contact details not available.");
+                    }
+                })
+                .catch(error => console.error('Error fetching contact details:', error));
+        }
+
+        // JavaScript to handle 'Book Now' button click
+        document.querySelectorAll('.book-now-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const propertyId = this.dataset.propertyId;
+                loadBookNowPage(propertyId);
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+
 </body>
 
 </html>
