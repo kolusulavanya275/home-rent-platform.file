@@ -20,7 +20,7 @@ class Property(models.Model):
     reviews_count = models.IntegerField(default=0)
     reviews = models.TextField(blank=True)
 
-    def _str_(self):
+    def __str__(self):
         return self.name
 
     def update_rating(self, new_rating):
@@ -42,22 +42,17 @@ class Contact(models.Model):
     phone = models.CharField(max_length=15)
     email = models.EmailField()
 
-    def _str_(self):
+    def __str__(self):
         return self.name
 
 
-class Booking(models.Model):
-    property = models.ForeignKey(
-        'Property', on_delete=models.CASCADE, related_name='bookings'
-    )
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, default=1 
-    )
-    start_date = models.DateField(default='2024-01-01')
-    end_date = models.DateField(default='2024-01-01')
-    status = models.CharField(
-        max_length=20, choices=[('pending', 'Pending'), ('confirmed', 'Confirmed'), ('cancelled', 'Cancelled')], default='pending'
-    )
-
-    def _str_(self):
-        return f"{self.property.name} - {self.user.username}"
+class Booking(models.Model):  
+     property = models.ForeignKey('Property', on_delete=models.CASCADE)  
+     name = models.CharField(max_length=255)  
+     email = models.EmailField()  
+     date = models.DateField()
+     status = models.CharField(max_length=20, default="Pending")  # Example field
+ 
+     def __str__(self):
+         return f"Booking by {self.name} on {self.date}"
+    

@@ -15,7 +15,7 @@
                 <h4>Book Your Property</h4>
             </div>
             <div class="card-body">
-                <form method="post" action="{% url 'book_now' property.id %}">
+                <form method="post" action="{% url 'confirm_booking' booking.id %}">
                     {% csrf_token %}
                     <input type="hidden" name="property_id" value="{{ property.id }}">
 

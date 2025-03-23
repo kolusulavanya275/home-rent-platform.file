@@ -7,4 +7,4 @@ class PropertyAdmin(admin.ModelAdmin):
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ('property', 'user', 'start_date', 'end_date', 'status')  # ✅ Correct fields
+    list_display = ('id', 'name', 'email', 'date', 'status')  # ✅ Correct fields
