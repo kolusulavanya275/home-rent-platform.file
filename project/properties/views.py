@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -540,3 +541,8 @@ def index(request):
 
 def investment_advice(request):
     return render(request, 'properties/investment_advice.html')
+
+from django.shortcuts import render
+
+# Create your views here.
+
