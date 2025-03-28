@@ -25,6 +25,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# STATIC_URL = '/static/'
+
+# # Ensure STATICFILES_DIRS correctly points to 'properties/static'
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'properties', 'static'),
+# ]
+
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -62,10 +71,16 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'project.urls'
 
+
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR ,'templates')],  # Ensure this points to your templates folder
+         'DIRS': [os.path.join(BASE_DIR, 'properties', 'templates')],
+              # Ensure this points to your templates folder
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,7 +148,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

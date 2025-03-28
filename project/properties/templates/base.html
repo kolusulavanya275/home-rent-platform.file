@@ -1,0 +1,21 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Rent Platform</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'buy_page' %}">For Buyers</a></li>
+            <li><a href="{% url 'rent_page' %}">For Tenants</a></li>
+        </ul>
+    </nav>
+
+    <div>
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
