@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -7,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import Property, Contact
 from django.contrib.auth.decorators import login_required
-from .models import Property, Booking
+from .models import Property, Booking ,Payment
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
 from datetime import datetime  # ✅ Import datetime
@@ -16,13 +15,9 @@ import json
 from .models import Payment 
 from io import BytesIO
 from django.shortcuts import render
-from decimal import Decimal
-
+from decimal import Decimal 
+from django.utils.timezone import localtime
 from django.views.decorators.csrf import csrf_exempt
-from django.utils import timezone
-from django.http import HttpResponseBadRequest  # ✅ Import this
-
-
 
 
 # from django.shortcuts import render
@@ -131,7 +126,7 @@ def post_property(request):
             image=image,
             rating=rating,  # Save rating
             reviews=reviews,  # Save reviews
-            reviews_count=12 if reviews else 0  # First review if provided
+            reviews_count=len(reviews) if reviews else 0  # Count reviews dynamically
         )
 
         Contact.objects.create(
@@ -158,52 +153,8 @@ def post_property(request):
 
 # sign-in and sign-up code
 
-@login_required
 def index(request):
-    activity = request.session.get("activity", {
-        "recently_searched": [],
-        "recently_viewed": [],
-        "shortlisted": [],
-        "contacted": []
-    })
-    print(f" Current Session Activity: {activity}")  # Debugging
-
-
-    recently_searched = Property.objects.filter(id__in=activity["recently_searched"])
-    recently_viewed = Property.objects.filter(id__in=activity["recently_viewed"])
-    shortlisted = Property.objects.filter(id__in=activity["shortlisted"])
-    contacted = Property.objects.filter(id__in=activity["contacted"])
-
-    return render(request, "properties/index.html", {
-        "recently_searched": recently_searched,
-        "recently_viewed": recently_viewed,
-        "shortlisted": shortlisted,
-        "contacted": contacted
-    })
-@login_required
-def track_activity(request, activity_type, property_id):
-    print(f" track_activity called with: {activity_type}, Property ID: {property_id}")  # Debugging
-
-
-    if request.method != "POST":
-      return HttpResponseBadRequest("Invalid request method")
-    if "activity" not in request.session:
-        request.session["activity"] = {
-            "recently_searched": [],
-            "recently_viewed": [],
-            "shortlisted": [],
-            "contacted": []
-        }
-
-    activity = request.session["activity"]
-
-    if activity_type in activity and property_id not in activity[activity_type]:
-        activity[activity_type].insert(0, property_id)
-        activity[activity_type] = activity[activity_type][:5]  # Keep only last 5 entries
-
-    request.session["activity"] = activity
-    return redirect("index")
-
+    return render(request, 'properties/index.html')  # Load the main page
 
 def signup_view(request):
     if request.method == "POST":
@@ -374,129 +325,76 @@ def payment(request, booking_id):
     return render(request, "properties/payment.html", {"booking": booking, "payment": payment})
 
 
-@login_required
-# def process_payment(request, booking_id):  
-#     if request.method == "POST":
-#         try:
-#             data = json.loads(request.body)
-
-#             # Retrieve user from the request
-#             user = request.user
-
-#             # Extract payment details
-#             card_name = data.get("card_name")
-#             card_number = data.get("card_number")
-#             expiry_date = data.get("expiry_date")
-#             cvv = data.get("cvv")
-#             amount = data.get("amount")
-
-#             # Save payment details to database
-#             payment = Payment.objects.create(
-#                 user=user,
-#                 card_name=card_name,
-#                 card_number=card_number,
-#                 expiry_date=expiry_date,
-#                 cvv=cvv,
-#                 amount=amount
-#             )
-
-#             return JsonResponse({"status": "success", "message": "Payment successful!", "payment_id": payment.id})
-
-#         except Exception as e:
-#             return JsonResponse({"status": "error", "message": str(e)})
-    
-#     return JsonResponse({"status": "error", "message": "Invalid request"}, status=400)
 
 
 
 
 @login_required
 def process_payment(request, booking_id):
-    booking = get_object_or_404(Booking, id=booking_id)
-
-    if request.method == "POST":
-        card_name = request.POST.get("card_name")
-        card_number = request.POST.get("card_number")
-        expiry_date = request.POST.get("expiry_date")
-        cvv = request.POST.get("cvv")
-        amount = request.POST.get("amount")
-        payment_method = request.POST.get('payment_method')
-
-        if not (card_name and card_number and expiry_date and cvv and amount):
-            return JsonResponse({"success": False, "message": "Please fill in all the fields."}, status=400)
-            
-        try:
-            amount_decimal = Decimal(amount)  # Convert amount to Decimal
-        except ValueError:
-            return JsonResponse({"success": False, "message": "Invalid amount format."}, status=400)
-
-
-        # Save payment record in the database
-        payment = Payment.objects.create(
-            booking=booking,
-            user=request.user,
-            card_name=card_name,
-            card_number=card_number,
-            expiry_date=expiry_date,
-            cvv=cvv,
-            amount=amount_decimal,
-            payment_date=timezone.now()
-        )
-        if not amount or not payment_method:
-            print(" Missing Fields:", request.POST)  # Debugging
-            return JsonResponse({"success": False, "message": "Please fill in all the fields."}, status=400)
-
-        print(f" Payment Processing: Booking {booking_id}, Amount: {amount}, Method: {payment_method}")
-
-       
-
-        return JsonResponse({"success": True, "message": "Payment successful!"})  # ✅ Return JSON
-
-    return JsonResponse({"success": False, "message": "Invalid request"}, status=400)
-
-
-
-
-# def download_invoice(request, booking_id):
-#     booking = get_object_or_404(payment, id=booking_id)
-#     response = HttpResponse(content_type='application/pdf')
-#     response['Content-Disposition'] = f'attachment; filename="invoice_{booking.id}.pdf"'
+    try:
+        booking = Booking.objects.get(id=booking_id)
+    except Booking.DoesNotExist:
+        messages.error(request, "Booking not found.")
+        return redirect('home')  # Or your desired redirect location
     
-#     p = canvas.Canvas(response)
-#     p.drawString(100, 800, f"Invoice for Booking ID: {booking.id}")
-#     p.drawString(100, 780, f"Tenant: {booking.user.username}")
-#     p.drawString(100, 760, f"Property: {booking.property.name}")  # Corrected field
-#     p.drawString(100, 720, "Thank you for choosing House Rent Platform!")
-#     p.showPage()
-#     p.save()
-#     return response
+    if request.method == "POST":
+        # Check if payment already exists for this booking and user
+        existing_payment = Payment.objects.filter(booking=booking, user=request.user).first()
+
+        if existing_payment:
+            messages.warning(request, "Payment already exists for this booking.")
+            return redirect('payment', booking_id=booking_id)  # Redirect to the payment page with existing payment data
+        
+        try:
+            # Create new payment if not exists
+            payment = Payment.objects.create(
+                booking=booking,
+                user=request.user,
+                card_name=request.POST.get('card_name'),
+                card_number=request.POST.get('card_number'),
+                expiry_date=request.POST.get('expiry_date'),
+                cvv=request.POST.get('cvv'),
+                amount=booking.property.price  # Assuming price is stored in the property model
+            )
+            messages.success(request, "Payment successful!")
+            return redirect("payment", booking_id=booking_id)  # Redirect to payment page with updated data
+        except IntegrityError as e:
+            # Handle potential database issues like duplicate entries or constraint violations
+            messages.error(request, f"Error processing payment: {e}")
+            return redirect('payment', booking_id=booking_id)
+    
+    # Render the payment page for GET request
+    return render(request, 'payment.html', {'booking': booking})
+
 
 
 def download_invoice(request, payment_id):
-    # Fetch the payment record
     payment = get_object_or_404(Payment, id=payment_id)
 
-    # Create a PDF response
     buffer = BytesIO()
     p = canvas.Canvas(buffer)
 
-    # Add invoice details
-    p.drawString(100, 750, "Invoice")
-    p.drawString(100, 730, f"Payment ID: {payment.id}")
-    p.drawString(100, 710, f"Amount: {payment.amount}")
-    p.drawString(100, 690, f"Payment Method: {payment.payment_method}")
-    p.drawString(100, 670, f"Payment Date: {payment.payment_date}")
+    # Format invoice better
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(200, 800, "INVOICE")
 
-    # Finalize the PDF
+    p.setFont("Helvetica", 12)
+    p.drawString(100, 750, f"Payment ID: {payment.id}")
+    p.drawString(100, 730, f"User: {payment.user.username}")
+    p.drawString(100, 710, f"Amount: ${payment.amount}")
+    p.drawString(100, 690, f"Payment Date: {localtime(payment.payment_date).strftime('%Y-%m-%d %H:%M')}")
+
+    # Finalize
     p.showPage()
     p.save()
-
     buffer.seek(0)
 
-    # Return response as a downloadable PDF
     response = HttpResponse(buffer, content_type="application/pdf")
     response["Content-Disposition"] = f'attachment; filename="invoice_{payment.id}.pdf"'
     return response
+
+
+
 
 
 def booking_confirmation(request):
@@ -541,8 +439,3 @@ def index(request):
 
 def investment_advice(request):
     return render(request, 'properties/investment_advice.html')
-
-from django.shortcuts import render
-
-# Create your views here.
-

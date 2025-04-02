@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.timezone import now  # ✅ Import now()
+from django.utils.timezone import now  #  Import now()
 
-# ✅ Property Model
+#  Property Model
 class Property(models.Model):
     PROPERTY_TYPES = [
         ('rent', 'Rent'),
@@ -28,7 +28,7 @@ class Property(models.Model):
         self.rating = total_rating / self.reviews_count
         self.save()
 
-# ✅ Contact Model
+#  Contact Model
 class Contact(models.Model):
     property = models.OneToOneField(Property, on_delete=models.CASCADE, related_name='contact')
     name = models.CharField(max_length=200)
@@ -76,6 +76,8 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"Payment {self.id} - {self.user.username} - ${self.amount}"
+    
+    
 class SearchHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     property = models.ForeignKey('Property', on_delete=models.CASCADE)
