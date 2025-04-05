@@ -259,7 +259,7 @@ def get_contact_details(request, property_id):
 #         check_in_date = request.POST.get('check_in_date')  # Booking start date
 #         check_out_date = request.POST.get('check_out_date')  # Booking end date
 
-#         # Booking create cheyyadam
+#        
 #         booking = Booking.objects.create(
 #             user=request.user,  # Logged-in user
 #             property=property_obj,  # Property object
@@ -269,7 +269,7 @@ def get_contact_details(request, property_id):
         
 #         )
 
-#         # Booking ayyaka agreement page ki redirect cheyyadam
+#         
 #         return redirect('agreement', booking_id=booking.id)
 
 #     return render(request, 'properties/book_now.html', {'property': property_obj})
@@ -282,7 +282,7 @@ def book_now(request, property_id):
     property_obj = get_object_or_404(Property, id=property_id)
 
     if request.method == 'POST':
-        # Form nunchi booking details techadam
+        
         check_in_date = request.POST.get('check_in_date')  # Booking start date
         check_out_date = request.POST.get('check_out_date')  # Booking end date
         
@@ -292,11 +292,11 @@ def book_now(request, property_id):
         except ValueError:
             return HttpResponse("Invalid date format", status=400)
 
-        # Check in date check cheyyadam
+        
         if check_in_date >= check_out_date:
             return HttpResponse("Check-out date must be after check-in date.", status=400)
 
-        # Booking create cheyyadam
+        
         booking = Booking.objects.create(
             user=request.user,  # Logged-in user
             property=property_obj,  # Property object
@@ -305,7 +305,7 @@ def book_now(request, property_id):
            
         )
 
-        # Booking ayyaka agreement page ki redirect cheyyadam
+        
         return redirect('agreement', booking_id=booking.id)
 
     return render(request, 'properties/book_now.html', {'property': property_obj})
