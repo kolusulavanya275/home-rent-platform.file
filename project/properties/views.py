@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Property, Booking ,Payment
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
-from datetime import datetime  # ✅ Import datetime
+from datetime import datetime  
 from django.shortcuts import render
 import json
 from .models import Payment 
@@ -358,7 +358,7 @@ def process_payment(request, booking_id):
             )
             messages.success(request, "Payment successful!")
             return redirect("payment", booking_id=booking_id)  # Redirect to payment page with updated data
-        except IntegrityError as e:
+        except IntegrityError as e: # type: ignore
             # Handle potential database issues like duplicate entries or constraint violations
             messages.error(request, f"Error processing payment: {e}")
             return redirect('payment', booking_id=booking_id)
