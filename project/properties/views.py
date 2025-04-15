@@ -158,15 +158,15 @@ def index(request):
 
 def signup_view(request):
     if request.method == "POST":
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        # email = request.POST['email']
+        password = request.POST.get('password')
 
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already taken!")
             return redirect('signup')
 
-        user = User.objects.create_user(username=username, email=email, password=password)
+        user = User.objects.create_user(username=username,  password=password)
         user.save()
         login(request, user)  # Auto login after sign-up
         return redirect('index')  # Redirect to main page
